@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCustomerGoodsDefaultMapper">
+    
+    <resultMap type="SysCustomerGoodsDefault" id="SysCustomerGoodsDefaultResult">
+        <result property="customerId"    column="customer_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="defaultPrice"    column="default_price"    />
+    </resultMap>
+
+    <sql id="selectSysCustomerGoodsDefaultVo">
+        select customer_id, goods_id, default_price from sys_customer_goods_default
+    </sql>
+
+    <select id="selectSysCustomerGoodsDefaultList" parameterType="SysCustomerGoodsDefault" resultMap="SysCustomerGoodsDefaultResult">
+        <include refid="selectSysCustomerGoodsDefaultVo"/>
+        <where>  
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="defaultPrice != null "> and default_price = #{defaultPrice}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCustomerGoodsDefaultByCustomerId" parameterType="Long" resultMap="SysCustomerGoodsDefaultResult">
+        <include refid="selectSysCustomerGoodsDefaultVo"/>
+        where customer_id = #{customerId}
+    </select>
+        
+    <insert id="insertSysCustomerGoodsDefault" parameterType="SysCustomerGoodsDefault">
+        insert into sys_customer_goods_default
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">customer_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="defaultPrice != null">default_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">#{customerId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="defaultPrice != null">#{defaultPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCustomerGoodsDefault" parameterType="SysCustomerGoodsDefault">
+        update sys_customer_goods_default
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="defaultPrice != null">default_price = #{defaultPrice},</if>
+        </trim>
+        where customer_id = #{customerId}
+    </update>
+
+    <delete id="deleteSysCustomerGoodsDefaultByCustomerId" parameterType="Long">
+        delete from sys_customer_goods_default where customer_id = #{customerId}
+    </delete>
+
+    <delete id="deleteSysCustomerGoodsDefaultByCustomerIds" parameterType="String">
+        delete from sys_customer_goods_default where customer_id in 
+        <foreach item="customerId" collection="array" open="(" separator="," close=")">
+            #{customerId}
+        </foreach>
+    </delete>
+
+</mapper>

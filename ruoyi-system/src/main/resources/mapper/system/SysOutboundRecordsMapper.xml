@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysOutboundRecordsMapper">
+    
+    <resultMap type="SysOutboundRecords" id="SysOutboundRecordsResult">
+        <result property="id"    column="id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="timestamp"    column="timestamp"    />
+        <result property="day"    column="day"    />
+        <result property="caseCount"    column="case_count"    />
+        <result property="priceTotal"    column="price_total"    />
+        <result property="comment"    column="comment"    />
+    </resultMap>
+
+    <sql id="selectSysOutboundRecordsVo">
+        select id, customer_id, timestamp, day, case_count, price_total, comment from sys_outbound_records
+    </sql>
+
+    <select id="selectSysOutboundRecordsList" parameterType="SysOutboundRecords" resultMap="SysOutboundRecordsResult">
+        <include refid="selectSysOutboundRecordsVo"/>
+        <where>  
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="timestamp != null "> and timestamp = #{timestamp}</if>
+            <if test="day != null  and day != ''"> and day = #{day}</if>
+            <if test="caseCount != null "> and case_count = #{caseCount}</if>
+            <if test="priceTotal != null "> and price_total = #{priceTotal}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysOutboundRecordsById" parameterType="Long" resultMap="SysOutboundRecordsResult">
+        <include refid="selectSysOutboundRecordsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysOutboundRecords" parameterType="SysOutboundRecords" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_outbound_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">customer_id,</if>
+            <if test="timestamp != null">timestamp,</if>
+            <if test="day != null and day != ''">day,</if>
+            <if test="caseCount != null">case_count,</if>
+            <if test="priceTotal != null">price_total,</if>
+            <if test="comment != null">comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null">#{customerId},</if>
+            <if test="timestamp != null">#{timestamp},</if>
+            <if test="day != null and day != ''">#{day},</if>
+            <if test="caseCount != null">#{caseCount},</if>
+            <if test="priceTotal != null">#{priceTotal},</if>
+            <if test="comment != null">#{comment},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysOutboundRecords" parameterType="SysOutboundRecords">
+        update sys_outbound_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="timestamp != null">timestamp = #{timestamp},</if>
+            <if test="day != null and day != ''">day = #{day},</if>
+            <if test="caseCount != null">case_count = #{caseCount},</if>
+            <if test="priceTotal != null">price_total = #{priceTotal},</if>
+            <if test="comment != null">comment = #{comment},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysOutboundRecordsById" parameterType="Long">
+        delete from sys_outbound_records where id = #{id}
+    </delete>
+
+    <delete id="deleteSysOutboundRecordsByIds" parameterType="String">
+        delete from sys_outbound_records where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

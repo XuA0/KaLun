@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCustomerMapper">
+    
+    <resultMap type="SysCustomer" id="SysCustomerResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="phone"    column="phone"    />
+        <result property="underFrame"    column="under_frame"    />
+        <result property="debts"    column="debts"    />
+    </resultMap>
+
+    <sql id="selectSysCustomerVo">
+        select id, name, phone, under_frame, debts from sys_customer
+    </sql>
+
+    <select id="selectSysCustomerList" parameterType="SysCustomer" resultMap="SysCustomerResult">
+        <include refid="selectSysCustomerVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="underFrame != null "> and under_frame = #{underFrame}</if>
+            <if test="debts != null "> and debts = #{debts}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCustomerById" parameterType="Long" resultMap="SysCustomerResult">
+        <include refid="selectSysCustomerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysCustomer" parameterType="SysCustomer" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="phone != null">phone,</if>
+            <if test="underFrame != null">under_frame,</if>
+            <if test="debts != null">debts,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="underFrame != null">#{underFrame},</if>
+            <if test="debts != null">#{debts},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCustomer" parameterType="SysCustomer">
+        update sys_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="underFrame != null">under_frame = #{underFrame},</if>
+            <if test="debts != null">debts = #{debts},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCustomerById" parameterType="Long">
+        delete from sys_customer where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCustomerByIds" parameterType="String">
+        delete from sys_customer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

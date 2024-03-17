@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysGoodsMapper">
+    
+    <resultMap type="SysGoods" id="SysGoodsResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="unit"    column="unit"    />
+        <result property="caseRatio"    column="case_ratio"    />
+        <result property="defaultPrice"    column="default_price"    />
+    </resultMap>
+
+    <sql id="selectSysGoodsVo">
+        select id, name, unit, case_ratio, default_price from sys_goods
+    </sql>
+
+    <select id="selectSysGoodsList" parameterType="SysGoods" resultMap="SysGoodsResult">
+        <include refid="selectSysGoodsVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="caseRatio != null "> and case_ratio = #{caseRatio}</if>
+            <if test="defaultPrice != null "> and default_price = #{defaultPrice}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysGoodsById" parameterType="Long" resultMap="SysGoodsResult">
+        <include refid="selectSysGoodsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysGoods" parameterType="SysGoods" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="unit != null">unit,</if>
+            <if test="caseRatio != null">case_ratio,</if>
+            <if test="defaultPrice != null">default_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="caseRatio != null">#{caseRatio},</if>
+            <if test="defaultPrice != null">#{defaultPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysGoods" parameterType="SysGoods">
+        update sys_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="caseRatio != null">case_ratio = #{caseRatio},</if>
+            <if test="defaultPrice != null">default_price = #{defaultPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysGoodsById" parameterType="Long">
+        delete from sys_goods where id = #{id}
+    </delete>
+
+    <delete id="deleteSysGoodsByIds" parameterType="String">
+        delete from sys_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

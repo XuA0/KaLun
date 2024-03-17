@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysOutboundGoodsMapper">
+    
+    <resultMap type="SysOutboundGoods" id="SysOutboundGoodsResult">
+        <result property="outboundId"    column="outbound_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="count"    column="count"    />
+        <result property="priceTotal"    column="price_total"    />
+        <result property="price"    column="price"    />
+        <result property="caseTotal"    column="case_total"    />
+    </resultMap>
+
+    <sql id="selectSysOutboundGoodsVo">
+        select outbound_id, goods_id, count, price_total, price, case_total from sys_outbound_goods
+    </sql>
+
+    <select id="selectSysOutboundGoodsList" parameterType="SysOutboundGoods" resultMap="SysOutboundGoodsResult">
+        <include refid="selectSysOutboundGoodsVo"/>
+        <where>  
+            <if test="outboundId != null "> and outbound_id = #{outboundId}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="priceTotal != null "> and price_total = #{priceTotal}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="caseTotal != null "> and case_total = #{caseTotal}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysOutboundGoodsByOutboundId" parameterType="Long" resultMap="SysOutboundGoodsResult">
+        <include refid="selectSysOutboundGoodsVo"/>
+        where outbound_id = #{outboundId}
+    </select>
+        
+    <insert id="insertSysOutboundGoods" parameterType="SysOutboundGoods">
+        insert into sys_outbound_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outboundId != null">outbound_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="count != null">count,</if>
+            <if test="priceTotal != null">price_total,</if>
+            <if test="price != null">price,</if>
+            <if test="caseTotal != null">case_total,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outboundId != null">#{outboundId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="count != null">#{count},</if>
+            <if test="priceTotal != null">#{priceTotal},</if>
+            <if test="price != null">#{price},</if>
+            <if test="caseTotal != null">#{caseTotal},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysOutboundGoods" parameterType="SysOutboundGoods">
+        update sys_outbound_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="priceTotal != null">price_total = #{priceTotal},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="caseTotal != null">case_total = #{caseTotal},</if>
+        </trim>
+        where outbound_id = #{outboundId}
+    </update>
+
+    <delete id="deleteSysOutboundGoodsByOutboundId" parameterType="Long">
+        delete from sys_outbound_goods where outbound_id = #{outboundId}
+    </delete>
+
+    <delete id="deleteSysOutboundGoodsByOutboundIds" parameterType="String">
+        delete from sys_outbound_goods where outbound_id in 
+        <foreach item="outboundId" collection="array" open="(" separator="," close=")">
+            #{outboundId}
+        </foreach>
+    </delete>
+
+</mapper>
