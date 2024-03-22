@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain;
+package com.ruoyi.web.resp;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-03-17
  */
-public class SysCustomer extends BaseEntity {
+public class SysCustomerResp {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -59,6 +59,17 @@ public class SysCustomer extends BaseEntity {
      */
     @Excel(name = "累计欠款")
     private Double debts;
+
+    @Excel(name = "累计欠款（含新框）")
+    private Double debtsAll;
+
+    public Double getDebtsAll() {
+        return debtsAll;
+    }
+
+    public void setDebtsAll(Double debtsAll) {
+        this.debtsAll = debtsAll;
+    }
 
     public void setId(Long id) {
         this.id = id;

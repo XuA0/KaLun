@@ -6,34 +6,34 @@
 <body class="gray-bg">
      <div class="container-div">
         <div class="row">
-            <div class="col-sm-12 search-collapse">
-                <form id="formId">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                <label>商品名称：</label>
-                                <input type="text" name="name"/>
-                            </li>
-                            <li>
-                                <label>单位：</label>
-                                <input type="text" name="unit"/>
-                            </li>
-                            <li>
-                                <label>多少数量用一个框：</label>
-                                <input type="text" name="caseRatio"/>
-                            </li>
-                            <li>
-                                <label>默认价格：</label>
-                                <input type="text" name="defaultPrice"/>
-                            </li>
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
+<!--            <div class="col-sm-12 search-collapse">-->
+<!--                <form id="formId">-->
+<!--                    <div class="select-list">-->
+<!--                        <ul>-->
+<!--                            <li>-->
+<!--                                <label>商品名称：</label>-->
+<!--                                <input type="text" name="name"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>单位：</label>-->
+<!--                                <input type="text" name="unit"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>多少数量用一个框：</label>-->
+<!--                                <input type="text" name="caseRatio"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>默认价格：</label>-->
+<!--                                <input type="text" name="defaultPrice"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
+<!--                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
 
             <div class="btn-group-sm" id="toolbar" role="group">
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:goods:add">

@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysOutboundRecordsMapper">
-    
+
     <resultMap type="SysOutboundRecords" id="SysOutboundRecordsResult">
-        <result property="id"    column="id"    />
-        <result property="customerId"    column="customer_id"    />
-        <result property="timestamp"    column="timestamp"    />
-        <result property="day"    column="day"    />
-        <result property="caseCount"    column="case_count"    />
-        <result property="priceTotal"    column="price_total"    />
-        <result property="comment"    column="comment"    />
+        <result property="id" column="id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="day" column="day"/>
+        <result property="caseCountNew" column="case_count_new"/>
+        <result property="priceTotal" column="price_total"/>
+        <result property="comment" column="comment"/>
+        <result property="caseCountOld" column="case_count_old"/>
+        <result property="returnCaseNew" column="return_case_new"/>
+        <result property="returnCaseOld" column="return_case_old"/>
     </resultMap>
 
     <sql id="selectSysOutboundRecordsVo">
-        select id, customer_id, timestamp, day, case_count, price_total, comment from sys_outbound_records
+        select id,
+               customer_id, timestamp, day, case_count_new, price_total, comment, case_count_old, return_case_new, return_case_old
+        from sys_outbound_records
     </sql>
 
     <select id="selectSysOutboundRecordsList" parameterType="SysOutboundRecords" resultMap="SysOutboundRecordsResult">
         <include refid="selectSysOutboundRecordsVo"/>
-        <where>  
-            <if test="customerId != null "> and customer_id = #{customerId}</if>
-            <if test="timestamp != null "> and timestamp = #{timestamp}</if>
-            <if test="day != null  and day != ''"> and day = #{day}</if>
-            <if test="caseCount != null "> and case_count = #{caseCount}</if>
-            <if test="priceTotal != null "> and price_total = #{priceTotal}</if>
-            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+        <where>
+            <if test="customerId != null ">and customer_id = #{customerId}</if>
+            <if test="day != null  and day != ''">and day = #{day}</if>
+            <if test="comment != null  and comment != ''">and comment = #{comment}</if>
         </where>
     </select>
-    
+
     <select id="selectSysOutboundRecordsById" parameterType="Long" resultMap="SysOutboundRecordsResult">
         <include refid="selectSysOutboundRecordsVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertSysOutboundRecords" parameterType="SysOutboundRecords" useGeneratedKeys="true" keyProperty="id">
         insert into sys_outbound_records
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="customerId != null">customer_id,</if>
             <if test="timestamp != null">timestamp,</if>
             <if test="day != null and day != ''">day,</if>
-            <if test="caseCount != null">case_count,</if>
+            <if test="caseCountNew != null">case_count_new,</if>
             <if test="priceTotal != null">price_total,</if>
             <if test="comment != null">comment,</if>
-         </trim>
+            <if test="caseCountOld != null">case_count_old,</if>
+            <if test="returnCaseNew != null">return_case_new,</if>
+            <if test="returnCaseOld != null">return_case_old,</if>
+
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="customerId != null">#{customerId},</if>
             <if test="timestamp != null">#{timestamp},</if>
             <if test="day != null and day != ''">#{day},</if>
-            <if test="caseCount != null">#{caseCount},</if>
+            <if test="caseCountNew != null">#{caseCountNew},</if>
             <if test="priceTotal != null">#{priceTotal},</if>
             <if test="comment != null">#{comment},</if>
-         </trim>
+            <if test="caseCountOld != null">#{caseCountOld},</if>
+            <if test="returnCaseNew != null">#{returnCaseNew},</if>
+            <if test="returnCaseOld != null">#{returnCaseOld},</if>
+        </trim>
     </insert>
 
     <update id="updateSysOutboundRecords" parameterType="SysOutboundRecords">
@@ -61,19 +70,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="customerId != null">customer_id = #{customerId},</if>
             <if test="timestamp != null">timestamp = #{timestamp},</if>
             <if test="day != null and day != ''">day = #{day},</if>
-            <if test="caseCount != null">case_count = #{caseCount},</if>
+            <if test="caseCountNew != null">case_count_new = #{caseCountNew},</if>
             <if test="priceTotal != null">price_total = #{priceTotal},</if>
             <if test="comment != null">comment = #{comment},</if>
+            <if test="caseCountOld != null">case_count_old = #{caseCountOld},</if>
+            <if test="returnCaseNew != null">return_case_new = #{returnCaseNew},</if>
+            <if test="returnCaseOld != null">return_case_old = #{returnCaseOld},</if>
         </trim>
         where id = #{id}
     </update>
 
     <delete id="deleteSysOutboundRecordsById" parameterType="Long">
-        delete from sys_outbound_records where id = #{id}
+        delete
+        from sys_outbound_records
+        where id = #{id}
     </delete>
 
     <delete id="deleteSysOutboundRecordsByIds" parameterType="String">
-        delete from sys_outbound_records where id in 
+        delete from sys_outbound_records where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

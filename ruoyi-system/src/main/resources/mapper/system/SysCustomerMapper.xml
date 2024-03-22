@@ -8,12 +8,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
         <result property="phone"    column="phone"    />
-        <result property="underFrame"    column="under_frame"    />
+        <result property="underFrameNew"    column="under_frame_new"    />
+        <result property="underFrameOld"    column="under_frame_old"    />
         <result property="debts"    column="debts"    />
     </resultMap>
 
     <sql id="selectSysCustomerVo">
-        select id, name, phone, under_frame, debts from sys_customer
+        select id, name, phone, under_frame_new,under_frame_old, debts from sys_customer
     </sql>
 
     <select id="selectSysCustomerList" parameterType="SysCustomer" resultMap="SysCustomerResult">
@@ -21,7 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
-            <if test="underFrame != null "> and under_frame = #{underFrame}</if>
+            <if test="underFrameNew != null "> and under_frame_new = #{underFrameNew}</if>
+            <if test="underFrameOld != null "> and under_frame_old = #{underFrameOld}</if>
             <if test="debts != null "> and debts = #{debts}</if>
         </where>
     </select>
@@ -36,13 +38,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">name,</if>
             <if test="phone != null">phone,</if>
-            <if test="underFrame != null">under_frame,</if>
+            <if test="underFrameNew != null">under_frame_new,</if>
+            <if test="underFrameOld != null">under_frame_old,</if>
             <if test="debts != null">debts,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">#{name},</if>
             <if test="phone != null">#{phone},</if>
-            <if test="underFrame != null">#{underFrame},</if>
+            <if test="underFrameNew != null">#{underFrameNew},</if>
+            <if test="underFrameOld != null">#{underFrameOld},</if>
             <if test="debts != null">#{debts},</if>
          </trim>
     </insert>
@@ -52,7 +56,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="phone != null">phone = #{phone},</if>
-            <if test="underFrame != null">under_frame = #{underFrame},</if>
+            <if test="underFrameNew != null">under_frame_new = #{underFrameNew},</if>
+            <if test="underFrameOld != null">under_frame_old = #{underFrameOld},</if>
             <if test="debts != null">debts = #{debts},</if>
         </trim>
         where id = #{id}

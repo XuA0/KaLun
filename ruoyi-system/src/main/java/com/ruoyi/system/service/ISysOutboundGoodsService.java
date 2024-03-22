@@ -58,4 +58,6 @@ public interface ISysOutboundGoodsService
      * @return 结果
      */
     public int deleteSysOutboundGoodsByOutboundId(Long outboundId);
+
+    List<SysOutboundGoods> selectSysOutboundGoodsListByOutBoundId(Long id);
 }

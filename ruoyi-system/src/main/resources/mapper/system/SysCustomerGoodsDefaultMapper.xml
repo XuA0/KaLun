@@ -45,10 +45,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSysCustomerGoodsDefault" parameterType="SysCustomerGoodsDefault">
         update sys_customer_goods_default
         <trim prefix="SET" suffixOverrides=",">
-            <if test="goodsId != null">goods_id = #{goodsId},</if>
             <if test="defaultPrice != null">default_price = #{defaultPrice},</if>
         </trim>
-        where customer_id = #{customerId}
+        where customer_id = #{customerId} and goods_id = #{goodsId}
     </update>
 
     <delete id="deleteSysCustomerGoodsDefaultByCustomerId" parameterType="Long">

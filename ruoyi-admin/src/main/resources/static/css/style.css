@@ -1162,6 +1162,8 @@ button.dim:active:before {
     background-color: #2F4050;
    	word-break: break-all;
     overflow-wrap: break-word;
+    white-space: pre-line;
+    text-align: left;
 }
 
 .tooltip.top .tooltip-arrow {

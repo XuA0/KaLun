@@ -14,7 +14,7 @@ import com.ruoyi.common.core.text.Convert;
  * @author ruoyi
  * @date 2024-03-17
  */
-@Service
+@Service("SysCustomerServiceImpl")
 public class SysCustomerServiceImpl implements ISysCustomerService 
 {
     @Autowired

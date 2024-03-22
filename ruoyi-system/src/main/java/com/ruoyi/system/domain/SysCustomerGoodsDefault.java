@@ -25,7 +25,7 @@ public class SysCustomerGoodsDefault extends BaseEntity
 
     /** 默认价格 */
     @Excel(name = "默认价格")
-    private Long defaultPrice;
+    private Double defaultPrice;
 
     public void setCustomerId(Long customerId) 
     {
@@ -45,12 +45,12 @@ public class SysCustomerGoodsDefault extends BaseEntity
     {
         return goodsId;
     }
-    public void setDefaultPrice(Long defaultPrice) 
+    public void setDefaultPrice(Double defaultPrice)
     {
         this.defaultPrice = defaultPrice;
     }
 
-    public Long getDefaultPrice() 
+    public Double getDefaultPrice()
     {
         return defaultPrice;
     }

@@ -1,61 +1,113 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('新增【请填写功能名称】')" />
+    <th:block th:include="include :: header('新增【请填写功能名称】')"/>
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-records-add">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">顾客id：</label>
-                <div class="col-sm-8">
-                    <input name="customerId" class="form-control" type="text" required>
-                </div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-records-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">顾客：</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="customerId"
+                        th:with="customers=${@SysCustomerServiceImpl.selectSysCustomerList(null)}">
+                    <option value=""></option>
+                    <option th:each="customer : ${customers}" th:text="${customer.getName()}"
+                            th:value="${customer.getId()}"></option>
+                </select>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">创建时间：</label>
-                <div class="col-sm-8">
-                    <input name="timestamp" class="form-control" type="text" required>
-                </div>
+        </div>
+        <div class="form-group" th:each="good : ${@SysGoodsServiceImpl.selectSysGoodsList(null)}">
+            <label class="col-sm-3 control-label" th:text="${good.getName().concat('数量')}"></label>
+            <div class="col-sm-8">
+                <input th:attr="name=${'good_number_' + good.id}, id='good_number_' + ${good.id}"
+                       class="form-control good-number" type="number">
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">日期：</label>
-                <div class="col-sm-8">
-                    <input name="day" class="form-control" type="text" required>
-                </div>
+            <label class="col-sm-3 control-label" th:text="${good.getName().concat('单价')}"></label>
+            <div class="col-sm-8">
+                <input th:attr="name=${'good_price_' + good.id}, id='good_price_' + ${good.id}"
+                       class="form-control good-price" type="number"
+                       th:value="${good.getDefaultPrice()}">
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">用框数量：</label>
-                <div class="col-sm-8">
-                    <input name="caseCount" class="form-control" type="text">
-                </div>
+            <label class="col-sm-3 control-label" th:text="${good.getName().concat('金额')}"></label>
+            <div class="col-sm-8">
+                <input th:attr="name=${'good_total_' + good.id}, id='good_total_' + ${good.id}"
+                       class="form-control good-total" type="number" disabled>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">货款：</label>
-                <div class="col-sm-8">
-                    <input name="priceTotal" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">备注：</label>
-                <div class="col-sm-8">
-                    <input name="comment" class="form-control" type="text">
-                </div>
-            </div>
-        </form>
-    </div>
-    <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
-        var prefix = ctx + "system/records"
-        $("#form-records-add").validate({
-            focusCleanup: true
-        });
+        </div>
 
-        function submitHandler() {
-            if ($.validate.form()) {
-                $.operate.save(prefix + "/add", $('#form-records-add').serialize());
-            }
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">日期：</label>
+            <div class="input-group date">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input type="text" name="day" id="day" class="form-control" placeholder="yyyy-MM-dd HH:mm">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">用框数量（旧）：</label>
+            <div class="col-sm-8">
+                <input name="caseCountOld" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">用框数量（新）：</label>
+            <div class="col-sm-8">
+                <input name="caseCountNew" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">货款：</label>
+            <div class="col-sm-8">
+                <input name="priceTotalDisplay" id="priceTotalDisplay" class="form-control" type="text" disabled
+                       required>
+                <input name="priceTotal" id="priceTotal" class="form-control" type="hidden" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input name="comment" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "system/outBoundRecords"
+    $("#form-records-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-records-add').serialize());
         }
-    </script>
+    }
+
+    $(document).ready(function () {
+        $('.good-number, .good-price').on('input', function () {
+            var total = 0;
+            $('.good-total').each(function () {
+                var number = $(this).closest('.form-group').find('.good-number').val() ? parseFloat($(this).closest('.form-group').find('.good-number').val()) : 0;
+                var price = $(this).closest('.form-group').find('.good-number').val() ? parseFloat($(this).closest('.form-group').find('.good-price').val()) : 0;
+                var subtotal = number * price;
+                $(this).val(subtotal.toFixed(2));
+                total += subtotal;
+            });
+            $('#priceTotal').val(total.toFixed(2));
+            $('#priceTotalDisplay').val(total.toFixed(2));
+        });
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#day'
+        });
+    });
+</script>
 </body>
 </html>
