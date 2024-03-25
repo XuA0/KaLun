@@ -11,8 +11,13 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            <label>用户id：</label>
-                            <input type="text" name="customerId"/>
+                            <label>顾客：</label>
+                            <select class="form-control" name="customerId"
+                                    th:with="customers=${@SysCustomerServiceImpl.selectSysCustomerList(null)}">
+                                <option value="">所有</option>
+                                <option th:each="customer : ${customers}" th:text="${customer.getName()}"
+                                        th:value="${customer.getId()}"></option>
+                            </select>
                         </li>
                         <li>
                             <label>备注：</label>
