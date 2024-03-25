@@ -5,8 +5,8 @@
 </head>
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-		<form class="form-horizontal m" id="form-outBoundRecord-returnCase">
-			<input name="outBoundRecordId"  type="hidden"  th:value="${sysOutboundRecords.id}" />
+		<form class="form-horizontal m" id="form-customer-returnCase">
+			<input name="sysCustomerId"  type="hidden"  th:value="${sysCustomer.id}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label">新：</label>
 				<div class="col-sm-8">
@@ -27,7 +27,7 @@
 	<script type="text/javascript">
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	$.operate.save(ctx + "system/outBoundRecords/returnCase", $('#form-outBoundRecord-returnCase').serialize());
+	        	$.operate.save(ctx + "system/customer/returnCase", $('#form-customer-returnCase').serialize());
 	        }
 	    }
 	</script>

@@ -92,4 +92,9 @@ public class SysOutboundGoodsServiceImpl implements ISysOutboundGoodsService {
         sysOutboundGoods.setOutboundId(id);
         return this.selectSysOutboundGoodsList(sysOutboundGoods);
     }
+
+    @Override
+    public SysOutboundGoods selectSysOutboundGoodsByOutboundIdAndGoodId(Long outBoundRecordId, Long goodId) {
+        return sysOutboundGoodsMapper.selectSysOutboundGoodsByOutboundIdAndGoodId(outBoundRecordId, goodId);
+    }
 }

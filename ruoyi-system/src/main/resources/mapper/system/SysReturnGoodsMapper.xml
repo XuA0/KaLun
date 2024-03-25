@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.SysOutboundGoodsMapper">
+<mapper namespace="com.ruoyi.system.mapper.SysReturnGoodsMapper">
 
-    <resultMap type="SysOutboundGoods" id="SysOutboundGoodsResult">
+    <resultMap type="SysReturnGoods" id="SysReturnGoodsResult">
         <result property="outboundId"    column="outbound_id"    />
         <result property="goodsId"    column="goods_id"    />
         <result property="count"    column="count"    />
@@ -12,12 +12,12 @@
         <result property="price"    column="price"    />
     </resultMap>
 
-    <sql id="selectSysOutboundGoodsVo">
-        select outbound_id, goods_id, count, price_total, price from sys_outbound_goods
+    <sql id="selectSysReturnGoodsVo">
+        select outbound_id, goods_id, count, price_total, price from sys_return_goods
     </sql>
 
-    <select id="selectSysOutboundGoodsList" parameterType="SysOutboundGoods" resultMap="SysOutboundGoodsResult">
-        <include refid="selectSysOutboundGoodsVo"/>
+    <select id="selectSysReturnGoodsList" parameterType="SysReturnGoods" resultMap="SysReturnGoodsResult">
+        <include refid="selectSysReturnGoodsVo"/>
         <where>
             <if test="outboundId != null "> and outbound_id = #{outboundId}</if>
             <if test="goodsId != null "> and goods_id = #{goodsId}</if>
@@ -27,13 +27,13 @@
         </where>
     </select>
 
-    <select id="selectSysOutboundGoodsByOutboundId" parameterType="Long" resultMap="SysOutboundGoodsResult">
-        <include refid="selectSysOutboundGoodsVo"/>
+    <select id="selectSysReturnGoodsByOutboundId" parameterType="Long" resultMap="SysReturnGoodsResult">
+        <include refid="selectSysReturnGoodsVo"/>
         where outbound_id = #{outboundId}
     </select>
 
-    <insert id="insertSysOutboundGoods" parameterType="SysOutboundGoods">
-        insert into sys_outbound_goods
+    <insert id="insertSysReturnGoods" parameterType="SysReturnGoods">
+        insert into sys_return_goods
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="outboundId != null">outbound_id,</if>
             <if test="goodsId != null">goods_id,</if>
@@ -50,8 +50,8 @@
         </trim>
     </insert>
 
-    <update id="updateSysOutboundGoods" parameterType="SysOutboundGoods">
-        update sys_outbound_goods
+    <update id="updateSysReturnGoods" parameterType="SysReturnGoods">
+        update sys_return_goods
         <trim prefix="SET" suffixOverrides=",">
             <if test="goodsId != null">goods_id = #{goodsId},</if>
             <if test="count != null">count = #{count},</if>
@@ -61,21 +61,15 @@
         where outbound_id = #{outboundId}
     </update>
 
-    <delete id="deleteSysOutboundGoodsByOutboundId" parameterType="Long">
-        delete from sys_outbound_goods where outbound_id = #{outboundId}
+    <delete id="deleteSysReturnGoodsByOutboundId" parameterType="Long">
+        delete from sys_return_goods where outbound_id = #{outboundId}
     </delete>
 
-    <delete id="deleteSysOutboundGoodsByOutboundIds" parameterType="String">
-        delete from sys_outbound_goods where outbound_id in
+    <delete id="deleteSysReturnGoodsByOutboundIds" parameterType="String">
+        delete from sys_return_goods where outbound_id in
         <foreach item="outboundId" collection="array" open="(" separator="," close=")">
             #{outboundId}
         </foreach>
     </delete>
-
-    <select id="selectSysOutboundGoodsByOutboundIdAndGoodId" parameterType="Long" resultMap="SysOutboundGoodsResult">
-        <include refid="selectSysOutboundGoodsVo"/>
-        where outbound_id = #{outBoundRecordId}
-        and goods_id = #{goodId}
-    </select>
 
 </mapper>

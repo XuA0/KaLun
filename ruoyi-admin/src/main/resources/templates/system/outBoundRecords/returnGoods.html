@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('还框')" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-outBoundRecord-returnCase">
+			<input name="outBoundRecordId"  type="hidden"  th:value="${sysOutboundRecords.id}" />
+			<div class="form-group" th:each="good : ${sysOutboundGoodResps}">
+				<label class="col-sm-3 control-label" th:text="${good.getGoodName().concat('数量')}"></label>
+				<div class="col-sm-8">
+					<input th:attr="name=${'good_number_' + good.getGoodsId()}, id='good_number_' + ${good.getGoodsId()}"
+						   class="form-control good-number" type="number">
+				</div>
+				<label class="col-sm-3 control-label" th:text="${good.getGoodName().concat('单价')}"></label>
+				<div class="col-sm-8">
+					<input th:attr="name=${'good_price_' + good.getGoodsId()}, id='good_price_' + ${good.getGoodsId()}"
+						   class="form-control good-price" type="number"
+						   th:value="${good.getPrice()}" disabled>
+				</div>
+				<label class="col-sm-3 control-label" th:text="${good.getGoodName().concat('金额')}"></label>
+				<div class="col-sm-8">
+					<input th:attr="name=${'good_total_' + good.getGoodsId()}, id='good_total_' + ${good.getGoodsId()}"
+						   class="form-control good-total" type="number" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">总退款：</label>
+				<div class="col-sm-8">
+					<input name="priceTotalDisplay" id="priceTotalDisplay" class="form-control" type="text" disabled
+						   required>
+					<input name="priceTotal" id="priceTotal" class="form-control" type="hidden" required>
+				</div>
+			</div>
+		</form>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script type="text/javascript">
+		function submitHandler() {
+	        if ($.validate.form()) {
+	        	$.operate.save(ctx + "system/outBoundRecords/returnGoods", $('#form-outBoundRecord-returnCase').serialize());
+	        }
+	    }
+		$(document).ready(function () {
+			$('.good-number, .good-price').on('input', function () {
+				var total = 0;
+				$('.good-total').each(function () {
+					var number = $(this).closest('.form-group').find('.good-number').val() ? parseFloat($(this).closest('.form-group').find('.good-number').val()) : 0;
+					var price = $(this).closest('.form-group').find('.good-number').val() ? parseFloat($(this).closest('.form-group').find('.good-price').val()) : 0;
+					var subtotal = number * price;
+					$(this).val(subtotal.toFixed(2));
+					total += subtotal;
+				});
+				$('#priceTotal').val(total.toFixed(2));
+				$('#priceTotalDisplay').val(total.toFixed(2));
+			});
+		});
+
+	</script>
+</body>
+
+</html>

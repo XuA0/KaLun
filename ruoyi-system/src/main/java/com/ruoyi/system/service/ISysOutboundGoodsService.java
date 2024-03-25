@@ -60,4 +60,6 @@ public interface ISysOutboundGoodsService
     public int deleteSysOutboundGoodsByOutboundId(Long outboundId);
 
     List<SysOutboundGoods> selectSysOutboundGoodsListByOutBoundId(Long id);
+
+    SysOutboundGoods selectSysOutboundGoodsByOutboundIdAndGoodId(Long outBoundRecordId, Long goodId);
 }

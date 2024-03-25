@@ -2,6 +2,11 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <th:block th:include="include :: header('【请填写功能名称】列表')"/>
+    <style>
+        .goods td {
+            padding-right: 20px;
+        }
+    </style>
 </head>
 <body class="gray-bg">
 <div class="container-div">
@@ -118,23 +123,14 @@
                 {
                     field: 'caseCountString',
                     title: '用框数量',
-                    formatter: function (value, row, index) {
-                        return $.table.tooltip(value);
-                    }
                 },
                 {
                     field: 'returnCaseString',
                     title: '退框数量',
-                    formatter: function (value, row, index) {
-                        return $.table.tooltip(value);
-                    }
                 },
                 {
                     field: 'returnGoodString',
                     title: '退菜清单',
-                    formatter: function (value, row, index) {
-                        return $.table.tooltip(value);
-                    }
                 },
                 {
                     field: 'priceTotal',
@@ -154,7 +150,7 @@
                         var actions = [];
 
                         actions.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='returnCase(" + row.id + ")'><i class='fa fa-edit'></i>还框</a> ");
-
+                        actions.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='returnGoods(" + row.id + ")'><i class='fa fa-edit'></i>退菜</a> ");
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
 
@@ -168,6 +164,11 @@
     function returnCase(outputRecordId) {
         var url = prefix + '/returnCase/' + outputRecordId;
         $.modal.open("还框", url, '800', '300');
+    }
+
+    function returnGoods(outputRecordId) {
+        var url = prefix + '/returnGoods/' + outputRecordId;
+        $.modal.open("退菜", url, '800', '800');
     }
 </script>
 </body>

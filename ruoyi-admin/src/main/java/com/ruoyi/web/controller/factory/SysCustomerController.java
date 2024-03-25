@@ -1,12 +1,17 @@
 package com.ruoyi.web.controller.factory;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.system.domain.SysCustomerGoodsDefault;
+import com.ruoyi.system.domain.SysOutboundRecords;
+import com.ruoyi.system.domain.SysReturnDebts;
 import com.ruoyi.system.service.ISysCustomerGoodsDefaultService;
+import com.ruoyi.system.service.ISysReturnDebtsService;
 import com.ruoyi.web.resp.SysCustomerResp;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
@@ -40,6 +45,9 @@ public class SysCustomerController extends BaseController {
 
     @Autowired
     private ISysCustomerGoodsDefaultService sysCustomerGoodsDefaultService;
+
+    @Autowired
+    private ISysReturnDebtsService sysReturnDebtsService;
 
     @RequiresPermissions("system:customer:view")
     @GetMapping()
@@ -172,5 +180,57 @@ public class SysCustomerController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         return toAjax(sysCustomerService.deleteSysCustomerByIds(ids));
+    }
+
+
+    @RequiresPermissions("system:customer:edit")
+    @GetMapping("/returnCase/{id}")
+    public String returnCase(@PathVariable("id") Long id, ModelMap mmap) {
+        SysCustomer sysCustomer = sysCustomerService.selectSysCustomerById(id);
+        mmap.put("sysCustomer", sysCustomer);
+        return prefix + "/returnCase";
+    }
+
+    @RequiresPermissions("system:customer:edit")
+    @Log(title = "还框", businessType = BusinessType.UPDATE)
+    @PostMapping("/returnCase")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult returnCase(@RequestParam Map<String, Object> input) {
+        Long sysCustomerId = new Long(input.get("sysCustomerId").toString());
+        Long returnCaseNew = new Long(input.get("returnCaseNew").toString());
+        Long returnCaseOld = new Long(input.get("returnCaseOld").toString());
+        sysCustomerService.returnCase(sysCustomerId, returnCaseNew, returnCaseOld);
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:customer:edit")
+    @GetMapping("/returnDebts/{id}")
+    public String returnDebts(@PathVariable("id") Long id, ModelMap mmap) {
+        SysCustomer sysCustomer = sysCustomerService.selectSysCustomerById(id);
+        mmap.put("sysCustomer", sysCustomer);
+        return prefix + "/returnDebts";
+    }
+
+    @RequiresPermissions("system:customer:edit")
+    @Log(title = "还款", businessType = BusinessType.UPDATE)
+    @PostMapping("/returnDebts")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult returnDebts(@RequestParam Map<String, Object> input) {
+        //生成还款记录
+        Long sysCustomerId = new Long(input.get("sysCustomerId").toString());
+        String origin = input.get("origin").toString();
+        BigDecimal returnDebts = BigDecimal.valueOf(new Double(input.get("returnDebts").toString()));
+        String comment = input.get("comment").toString();
+        sysCustomerService.returnDebts(sysCustomerId, returnDebts);
+        SysReturnDebts sysReturnDebts = new SysReturnDebts();
+        sysReturnDebts.setCustomerId(sysCustomerId);
+        sysReturnDebts.setAmount(returnDebts);
+        sysReturnDebts.setOrigin(origin);
+        sysReturnDebts.setComment(comment);
+        sysReturnDebts.setTimestamp(System.currentTimeMillis());
+        sysReturnDebtsService.insertSysReturnDebts(sysReturnDebts);
+        return toAjax(1);
     }
 }
