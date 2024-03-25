@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<th:block th:include="include :: header('还框')" />
+    <th:block th:include="include :: header('还框')"/>
 </head>
 <body class="white-bg">
-	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-		<form class="form-horizontal m" id="form-customer-returnCase">
-			<input name="sysCustomerId"  type="hidden"  th:value="${sysCustomer.id}" />
-			<div class="form-group">
-				<label class="col-sm-3 control-label">新：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="returnCaseNew" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">旧：</label>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<input class="form-control" type="text"  name="returnCaseOld" />
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-	<th:block th:include="include :: footer" />
-	<script type="text/javascript">
-		function submitHandler() {
-	        if ($.validate.form()) {
-	        	$.operate.save(ctx + "system/customer/returnCase", $('#form-customer-returnCase').serialize());
-	        }
-	    }
-	</script>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-customer-returnCase">
+        <input name="sysCustomerId" type="hidden" th:value="${sysCustomer.id}"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">新：</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="returnCaseNew"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">旧：</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="returnCaseOld"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script type="text/javascript">
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(ctx + "system/customer/returnCase", $('#form-customer-returnCase').serialize());
+        }
+    }
+</script>
 </body>
 
 </html>

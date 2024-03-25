@@ -1,11 +1,13 @@
 package com.ruoyi.web.controller.factory;
 
+import java.text.DateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ruoyi.system.domain.SysCustomer;
 import com.ruoyi.system.service.ISysCustomerService;
 import com.ruoyi.web.resp.SysReturnDebtResp;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,7 @@ public class SysReturnDebtsController extends BaseController {
             BeanUtils.copyProperties(item, sysReturnDebtResp);
             SysCustomer sysCustomer = sysCustomerService.selectSysCustomerById(item.getCustomerId());
             sysReturnDebtResp.setCustomerName(sysCustomer.getName());
+            sysReturnDebtResp.setDay(DateFormatUtils.format(item.getTimestamp(), "yyyy-MM-dd HH:mm:ss"));
             return sysReturnDebtResp;
         }).collect(Collectors.toList());
         return getDataTable(sysReturnDebtResps);

@@ -4,6 +4,8 @@ import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.math.BigDecimal;
+
 public class SysReturnDebtResp {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +24,7 @@ public class SysReturnDebtResp {
      * 金额
      */
     @Excel(name = "金额")
-    private Long amount;
+    private BigDecimal amount;
 
     /**
      * 来源
@@ -43,6 +45,16 @@ public class SysReturnDebtResp {
     private String comment;
 
     private String customerName;
+
+    private String day;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     public String getCustomerName() {
         return customerName;
@@ -69,11 +81,11 @@ public class SysReturnDebtResp {
         return customerId;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
